@@ -1,0 +1,6 @@
+mem game TODO -*- mode: org -*-
+
+* Give an option to enter a different wordlist
+* In the comparisons, as is if the user just enters the same word
+  they will get it right (or wrong) each time.  Make it so each word
+  can only be compared to once.
