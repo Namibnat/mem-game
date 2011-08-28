@@ -4,3 +4,4 @@ mem game TODO -*- mode: org -*-
 * In the comparisons, as is if the user just enters the same word
   they will get it right (or wrong) each time.  Make it so each word
   can only be compared to once.
+* create a header file

@@ -27,18 +27,11 @@
 #include <stdlib.h>                                 /* for rand() */
 #include <time.h>                                   /* for seeding rand() */
 #include <unistd.h>                                 /* for sleep() */
-#define FW "./words"                                /* where to get the word file */
-#define FM 70000                                    /* max number of pointers to words */
-#define MREPS 100                                   /* max words that can be in the list of words to guess */
-#define MLW 25                                       /* max length of a word, when I chop them off guess[] for comparison */
-#define IN 1                                        /* state - in a word */
-#define OUT 0                                       /* state - out of a word */
-#define BUF 1000000                                 /* big buffer to read the file into as one long char array */
-#define DEFREPS 2                                   /* default number of reps */
-int checker(int *wrd, int **wordbin, int reps);
-void winner(int right, int reps);
-void printhelp(int reps);
-int main(int argc, char **argv)
+#include "mem.h"
+int checker(int *wrd, int **wordbin, int reps);     /* check word by word how many are right */
+void winner(int right, int reps);                   /* print results */
+void printhelp(int reps);                           /* for printing out help */
+int main(int argc, char *argv[])
 {
   srand(time(NULL));                                /* seed rand() */
   FILE *fp;                                         /* file pointer for the file with the words */
@@ -50,11 +43,11 @@ int main(int argc, char **argv)
                                                        reps - repetitions, i.e. how many words does the user wants to play with
                                                        state - in or out of a word
 					            */
-  int right, r, sec;                                /* for guessing, when it is right
+  int right, r, sec;                                /* right - for guessing, when it is right
                                                        r - for rand()
                                                        sec - seconds to sleep
                                                     */
-  int lcounter, wcounter, gcounter;;                /* lcounter - counting characters (l for letters)
+  int lcounter, wcounter, gcounter;                 /* lcounter - counting characters (l for letters)
                                                        wcounter - word counter
                                                        gcounter - counter while guessing
 						    */
@@ -64,7 +57,7 @@ int main(int argc, char **argv)
                                                        guess - an array defined further down for holding the guesses.
                                                                defined later because we want the number of reps
 						    */
-  int buffer[BUF];                                  /* The buffer for the file */
+  int buffer[BUF];                                  /* The buffer for the word file */
   state = OUT;
   /* clear the console to start the game */
   system("clear");
@@ -81,7 +74,7 @@ int main(int argc, char **argv)
   }
   else{
     reps = DEFREPS;                                       /* 2 reps as default, mainly for testing, increase later */
-    printf("\nYou'll play %d reps\n", reps);
+    printf("\nYou'll guess %d words\n", reps);
   }
   ri = reps;
   /* sec gets set to reps * 5 so I have five seconds per item in the list of words to learn them */
@@ -103,10 +96,21 @@ int main(int argc, char **argv)
   fclose(fp);
   /* get pointers to the words I'll be guessing */
   ii = 0;
+  int holder[reps];
+  int good, hcounter;
+  hcounter = 0;
   while(ri > 0){
-    r = rand() % wcounter + 1;
-    wordbin[ii++] = wps[r];
-    ri--;
+      r = rand() % wcounter + 1;
+      for(i = 0, good = 1; i < hcounter; i++){
+	if(r == holder[i]){
+	  good = 0;
+	}
+      }
+      if(good){
+	holder[hcounter++] = r;
+        wordbin[ii++] = wps[r];
+        ri--;
+      }
   }
   /* print them to the console */
   printf("\n");
@@ -149,14 +153,14 @@ int checker(int *wrd, int **wordbin, int reps)
 {
   int i, ii;
   for(i = 0; i < reps; i++){
-    for(ii = 0; wordbin[i][ii] != '\n' && wrd[ii] != '\n'; ii++){
+    for(ii = 0; wordbin[i][ii] != '\n' && wrd[ii] != '\n' && wordbin[i][ii] == wrd[ii]; ii++){
       if(wordbin[i][ii+1] == '\n' && wrd[ii+1] == '\n'){
 	return 1;
       }
     }
   }
   return(EXIT_SUCCESS);
-}                                                    /* ends main() */
+}
 void winner(int right, int reps)
 {
  if(right == reps){
