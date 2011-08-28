@@ -164,7 +164,7 @@ int checker(int *wrd, int **wordbin, int reps)
 void winner(int right, int reps)
 {
  if(right == reps){
-    printf("\n\t\033[1;31;40mHURRY!!!  \033[0;37;40mYou got them all right\n\n");
+    printf("\n\t\033[1;31;40mHURRAY!!!  \033[0;37;40mYou got them all right\n\n");
   }
   else if(right == 0){
     printf("\n\tYou got none, try a little harder next time\n\n");
