@@ -4,3 +4,6 @@ mem game TODO -*- mode: org -*-
 * In the comparisons, as is if the user just enters the same word
   they will get it right (or wrong) each time.  Make it so each word
   can only be compared to once.
+* Handle spaces
+* return the exact ones that player got right
+* print the origional words again so the user can compare their answer
