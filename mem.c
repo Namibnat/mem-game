@@ -22,19 +22,19 @@
 *                                                                         *
 ***************************************************************************/
 
-#include <stdio.h>                                  /* for io and stuff like that */
+#include <stdio.h>
 #include <ctype.h>                                  /* for isdigit and isalnum */
 #include <stdlib.h>                                 /* for rand() */
-#include <time.h>                                   /* for seeding rand() */
+#include <time.h>
 #include <unistd.h>                                 /* for sleep() */
 #include "mem.h"
 int checker(int *wrd, int **wordbin, int reps);     /* check word by word how many are right */
 void winner(int right, int reps);                   /* print results */
-void printhelp(int reps);                           /* for printing out help */
+void printhelp(int reps);
 int main(int argc, char *argv[])
 {
-  srand(time(NULL));                                /* seed rand() */
-  FILE *fp;                                         /* file pointer for the file with the words */
+  srand(time(NULL));
+  FILE *fp;                                         /* file pointer to file with the words */
   int i, ii, li, ri, c, letter, reps, state;        /* i & ii - general iterator
                                                        ri - iterator for getting the right num of words
                                                        li - letter iterator
@@ -73,11 +73,11 @@ int main(int argc, char *argv[])
     }
   }
   else{
-    reps = DEFREPS;                                       /* 2 reps as default, mainly for testing, increase later */
+    reps = DEFREPS;
     printf("\nYou'll guess %d words\n", reps);
   }
   ri = reps;
-  /* sec gets set to reps * 5 so I have five seconds per item in the list of words to learn them */
+  /* sec - how long user gets to study the word */
   sec = reps * 5;
   /* Get the words from the file */
   fp = fopen(FW, "r");
