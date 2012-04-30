@@ -64,12 +64,16 @@ int main(int argc, char *argv[])
   /* get args, set reps */
   if(argc > 1 && argv[1][0] == 'h'){
     printhelp(DEFREPS);
-    return(EXIT_SUCCESS) ;
+    return(EXIT_SUCCESS);
   }
   if(argc > 1 && isdigit(argv[1][0])){
     reps = argv[1][0] - '0';
     if(isdigit(argv[1][1])){
       reps = (reps * 10) + (argv[1][0] - '0');
+    }
+    if(isdigit(argv[1][2])){
+      printhelp(DEFREPS);
+      return(EXIT_SUCCESS);
     }
   }
   else{
@@ -126,6 +130,14 @@ int main(int argc, char *argv[])
   sleep(sec);
   system("clear");
   /* get the guesses */
+
+  /* todo *********************************
+   * I need to set another right guesses  *
+   * array, so that I can collect pointer *
+   * to what is guessed write, and        *
+   * secondly, I can use it to check that *
+   * a word isn't guessed twice           *
+   ***************************************/
   printf("\nGuess the %d words\npress enter after each word\n\n", reps);
   int guess[reps * 20];
   for(i = ii = 0, c = '0'; i < reps; i++){
