@@ -29,10 +29,12 @@
 #include <unistd.h>                                 /* for sleep() */
 #include "mem.h"
 int checker(int *wrd, int **wordbin, int reps);     /* check word by word how many are right */
-void winner(int right, int reps);                   /* print results */
+int winner(int right, int reps);                   /* print results */
 void printhelp(int reps);
+void printwords(int word[MLW]);
 int main(int argc, char *argv[])
 {
+
   srand(time(NULL));
   FILE *fp;                                         /* file pointer to file with the words */
   int i, ii, li, ri, c, letter, reps, state;        /* i & ii - general iterator
@@ -51,6 +53,8 @@ int main(int argc, char *argv[])
                                                        wcounter - word counter
                                                        gcounter - counter while guessing
 						    */
+  int wordholder_max;                               /* the last itterator of wordholder
+						    */
   int *wps[FM], *wordbin[MREPS], wrd[MLW];          /* wps - pointer to each word 
                                                        wordbin - the holder for the words we're playing with
                                                        wrd - while checking each guess, holds the word we're checking
@@ -58,6 +62,9 @@ int main(int argc, char *argv[])
                                                                defined later because we want the number of reps
 						    */
   int buffer[BUF];                                  /* The buffer for the word file */
+  int word[MLW], wordholder[MREPS][MLW];            /* word - holds a word for printing
+                                                       wordholder - holds all the words for printing after the game
+						    */
   state = OUT;
   /* clear the console to start the game */
   system("clear");
@@ -120,24 +127,26 @@ int main(int argc, char *argv[])
   printf("\n");
   for(i = 0, li = 0; i < ii; i++){
     while((letter = *(wordbin[i] + li)) != '\n'){
-      printf("%c", letter);
+      wordholder[i][li] = letter;
+      word[li] = letter;
       li++;
     }
+    word[li] = wordholder[i][li] = '\0';
+    printwords(word);
     printf("\n");
     li = 0;
   }
+  wordholder_max = i;
   /* After giving time to study them, clear screen */
   sleep(sec);
   system("clear");
   /* get the guesses */
 
   /* todo *********************************
-   * I need to set another right guesses  *
-   * array, so that I can collect pointer *
-   * to what is guessed write, and        *
-   * secondly, I can use it to check that *
+   * use wordholder to test that          *
    * a word isn't guessed twice           *
    ***************************************/
+
   printf("\nGuess the %d words\npress enter after each word\n\n", reps);
   int guess[reps * 20];
   for(i = ii = 0, c = '0'; i < reps; i++){
@@ -158,7 +167,21 @@ int main(int argc, char *argv[])
       ii = 0;
     }
   }
-  winner(right, reps);
+  /* End the game, if they get anything wrong, print the words again
+     so they can compare */
+  if(winner(right, reps)){
+    printf("The correct words were:");
+    printf("\n\033[1;31;40m");
+    for(i = 0; i <= wordholder_max; i++){
+      for(ii = 0; wordholder[i][ii] != '\0'; ii++){
+	word[ii] = wordholder[i][ii];
+      }
+      word[ii] = '\0';
+      printwords(word);
+      printf("\n");
+    }
+    printf("\033[0;37;40m");
+  }
   return 0;
 }
 int checker(int *wrd, int **wordbin, int reps)
@@ -173,10 +196,11 @@ int checker(int *wrd, int **wordbin, int reps)
   }
   return(EXIT_SUCCESS);
 }
-void winner(int right, int reps)
+int winner(int right, int reps)
 {
  if(right == reps){
     printf("\n\t\033[1;31;40mHURRAY!!!  \033[0;37;40mYou got them all right\n\n");
+    return 0;
   }
   else if(right == 0){
     printf("\n\tYou got none, try a little harder next time\n\n");
@@ -184,6 +208,7 @@ void winner(int right, int reps)
   else{
     printf("\n\tYou got %d right\n\n", right);
   }
+ return 1;
 }
 void printhelp(int reps)
 {
@@ -194,4 +219,11 @@ void printhelp(int reps)
   printf(" Then the console will clear and you must try to type each of the words.\n\n");
   printf(" After typing in each word, hit enter.\n");
   printf("\n \033[1;31;40mEnjoy the game!!!\033[0;37;40m\n\n");
+}
+void printwords(int word[MLW])
+{
+  int i;
+  for (i = 0; word[i] != '\0'; i++){
+    printf("%c", word[i]);
+  }
 }
