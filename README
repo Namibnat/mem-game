@@ -25,9 +25,6 @@ right number of words.
 
 The computer will let you know how many you got right.
 
-Get it
-usr@machine:~$ git@github.com:Namibnat/mem-game.git
-
 Edit it:
 If you want to move the 'words' file
 or alternatively use your own, just edit
