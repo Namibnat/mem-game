@@ -24,3 +24,18 @@ After each guess, hit enter until you've guessed the
 right number of words.
 
 The computer will let you know how many you got right.
+
+Get it
+usr@machine:~$ git@github.com:Namibnat/mem-game.git
+
+Edit it:
+If you want to move the 'words' file
+or alternatively use your own, just edit
+the first line of the mem.h file to give
+the path to your words file
+
+Build it:
+usr@machine:~$ make
+
+Run it:
+usr@machine:~$ ./mem
