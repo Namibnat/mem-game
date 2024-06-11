@@ -1,8 +1,8 @@
-Play a memory game to sharpen the pip
+# Play a memory game to sharpen the pip
 
 The game is part of a series of programs I'm
 writing to serve the duel purpose of sharpening
-my mind and helping me to learn the C programming 
+my mind and helping me to learn the C programming
 language.
 
 To play, run the program from a linux console.
@@ -32,7 +32,8 @@ the first line of the mem.h file to give
 the path to your words file
 
 Build it:
-usr@machine:~$ make
+$ make
 
 Run it:
-usr@machine:~$ ./mem
+$ ./mem
+
