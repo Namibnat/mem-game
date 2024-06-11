@@ -1,74 +1,33 @@
-/* ************************************************************************
-*                                                                         *
-*   Play a memory game to sharpen the pip                                 *
-*                                                                         *
-*   Copyright (C) 2011 by Vernon Swanepoel                                *
-*   vernon@sandcurves.com                                                 *
-*                                                                         *
-*   This program is free software; you can redistribute it and/or modify  *
-*   it under the terms of the GNU General Public License as published by  *
-*   the Free Software Foundation; either version 2 of the License, or     *
-*   (at your option) any later version.                                   *
-*                                                                         *
-*   This program is distributed in the hope that it will be useful,       *
-*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-*   GNU General Public License for more details.                          *
-*                                                                         *
-*   You should have received a copy of the GNU General Public License     *
-*   along with this program; if not, write to the                         *
-*   Free Software Foundation, Inc.,                                       *
-*   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
-*                                                                         *
-***************************************************************************/
 
 #include <stdio.h>
-#include <ctype.h>                                  /* for isdigit and isalnum */
-#include <stdlib.h>                                 /* for rand() */
+#include <ctype.h>
+#include <stdlib.h>
 #include <time.h>
-#include <unistd.h>                                 /* for sleep() */
+#include <unistd.h>
 #include "mem.h"
-int checker(int *wrd, int **wordbin, int reps);     /* check word by word how many are right */
-int winner(int right, int reps);                   /* print results */
+
+int checker(int *wrd, int **wordbin, int reps);
+int winner(int right, int reps);
 void printhelp(int reps);
 void printwords(int word[MLW]);
+
 int main(int argc, char *argv[])
 {
 
   srand(time(NULL));
-  FILE *fp;                                         /* file pointer to file with the words */
-  int i, ii, li, ri, c, letter, reps, state;        /* i & ii - general iterator
-                                                       ri - iterator for getting the right num of words
-                                                       li - letter iterator
-                                                       c - for character collecting while reading the file
-                                                       letter - to rep letter
-                                                       reps - repetitions, i.e. how many words does the user wants to play with
-                                                       state - in or out of a word
-					            */
-  int right, r, sec;                                /* right - for guessing, when it is right
-                                                       r - for rand()
-                                                       sec - seconds to sleep
-                                                    */
-  int lcounter, wcounter, gcounter;                 /* lcounter - counting characters (l for letters)
-                                                       wcounter - word counter
-                                                       gcounter - counter while guessing
-						    */
-  int wordholder_max;                               /* the last itterator of wordholder
-						    */
-  int *wps[FM], *wordbin[MREPS], wrd[MLW];          /* wps - pointer to each word 
-                                                       wordbin - the holder for the words we're playing with
-                                                       wrd - while checking each guess, holds the word we're checking
-                                                       guess - an array defined further down for holding the guesses.
-                                                               defined later because we want the number of reps
-						    */
-  int buffer[BUF];                                  /* The buffer for the word file */
-  int word[MLW], wordholder[MREPS][MLW];            /* word - holds a word for printing
-                                                       wordholder - holds all the words for printing after the game
-						    */
+  FILE *fp;
+  int i, ii, li, ri, c, letter, reps, state;
+  int right, r, sec;
+  int lcounter, wcounter, gcounter;
+  int wordholder_max;
+  int *wps[FM], *wordbin[MREPS], wrd[MLW];
+  int buffer[BUF];
+  int word[MLW], wordholder[MREPS][MLW];
+
   state = OUT;
   /* clear the console to start the game */
   system("clear");
-  /* get args, set reps */
+
   if(argc > 1 && argv[1][0] == 'h'){
     printhelp(DEFREPS);
     return(EXIT_SUCCESS);
@@ -184,6 +143,7 @@ int main(int argc, char *argv[])
   }
   return 0;
 }
+
 int checker(int *wrd, int **wordbin, int reps)
 {
   int i, ii;
@@ -196,6 +156,7 @@ int checker(int *wrd, int **wordbin, int reps)
   }
   return(EXIT_SUCCESS);
 }
+
 int winner(int right, int reps)
 {
  if(right == reps){
@@ -210,6 +171,7 @@ int winner(int right, int reps)
   }
  return 1;
 }
+
 void printhelp(int reps)
 {
   printf("\n\t\033[1;31;40mPlay a memory game to help your grey matter\n\n");
@@ -220,6 +182,7 @@ void printhelp(int reps)
   printf(" After typing in each word, hit enter.\n");
   printf("\n \033[1;31;40mEnjoy the game!!!\033[0;37;40m\n\n");
 }
+
 void printwords(int word[MLW])
 {
   int i;
